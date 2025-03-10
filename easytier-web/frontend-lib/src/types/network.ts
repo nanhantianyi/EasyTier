@@ -42,6 +42,16 @@ export interface NetworkConfig {
   disable_p2p?: boolean
   bind_device?: boolean
   no_tun?: boolean
+  enable_exit_node?: boolean
+  relay_all_peer_rpc?: boolean
+  multi_thread?: boolean
+
+  relay_network_whitelist: string[]
+
+  enable_manual_routes: boolean
+  routes: string[]
+
+  exit_nodes: string[]
 }
 
 export function DEFAULT_NETWORK_CONFIG(): NetworkConfig {
@@ -83,6 +93,13 @@ export function DEFAULT_NETWORK_CONFIG(): NetworkConfig {
     disable_p2p: false,
     bind_device: true,
     no_tun: false,
+    enable_exit_node: false,
+    relay_all_peer_rpc: false,
+    multi_thread: false,
+    relay_network_whitelist: ['*'],
+    enable_manual_routes: false,
+    routes: [],
+    exit_nodes: [],
   }
 }
 

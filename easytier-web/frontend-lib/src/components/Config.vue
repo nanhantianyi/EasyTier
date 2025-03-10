@@ -120,6 +120,23 @@ function searchListenerSuggestions(e: { query: string }) {
   listenerSuggestions.value = ret
 }
 
+
+const exitNodesSuggestions = ref([''])
+
+function searchExitNodesSuggestions(e: { query: string }) {
+  const ret = []
+  ret.push(e.query)
+  exitNodesSuggestions.value = ret
+}
+
+const whitelistSuggestions = ref([''])
+
+function searchWhitelistSuggestions(e: { query: string }) {
+  const ret = []
+  ret.push(e.query)
+  whitelistSuggestions.value = ret
+}
+
 interface BoolFlag {
   field: keyof NetworkConfig
   help: string
@@ -133,6 +150,9 @@ const bool_flags: BoolFlag[] = [
   { field: 'disable_p2p', help: 'disable_p2p_help' },
   { field: 'bind_device', help: 'bind_device_help' },
   { field: 'no_tun', help: 'no_tun_help' },
+  { field: 'enable_exit_node', help: 'enable_exit_node_help' },
+  { field: 'relay_all_peer_rpc', help: 'relay_all_peer_rpc_help' },
+  { field: 'multi_thread', help: 'multi_thread_help' },
 ]
 
 </script>
@@ -212,7 +232,7 @@ const bool_flags: BoolFlag[] = [
                     <div class="basis-64 flex" v-for="flag in bool_flags">
                       <Checkbox v-model="curNetwork[flag.field]" :input-id="flag.field" :binary="true" />
                       <label :for="flag.field" class="ml-2"> {{ t(flag.field) }} </label>
-                      <span class="pi pi-question-circle ml-2 self-center" v-tooltip="t(flag.help)"></span>
+                      <span class="pi pi-question-circle ml-2 self-center" v-tooltip="{content:t(flag.help),html:true}"></span>
                     </div>
 
                   </div>
@@ -283,6 +303,50 @@ const bool_flags: BoolFlag[] = [
                     :placeholder="t('dev_name_placeholder')" />
                 </div>
               </div>
+
+              <div class="flex flex-row gap-x-9 flex-wrap">
+                <div class="flex flex-col gap-2 basis-5/12 grow">
+                  <div class="flex">
+                    <label for="relay_network_whitelist">{{ t('relay_network_whitelist') }}</label>
+                    <span class="pi pi-question-circle ml-2 self-center"
+                          v-tooltip="{content:t('relay_network_whitelist_help'),html:true}"></span>
+                  </div>
+                  <AutoComplete id="relay_network_whitelist" v-model="curNetwork.relay_network_whitelist"
+                                :placeholder="t('relay_network_whitelist')" class="w-full" multiple fluid
+                                :suggestions="whitelistSuggestions" @complete="searchWhitelistSuggestions" />
+                </div>
+              </div>
+
+              <div class="flex flex-row gap-x-9 flex-wrap ">
+                <div class="flex flex-col gap-2 grow">
+                  <div class="flex">
+                    <label for="routes">{{ t('manual_routes') }}</label>
+                    <span class="pi pi-question-circle ml-2 self-center" v-tooltip="{content:t('manual_routes_help'),html:true}"></span>
+                  </div>
+                  <ToggleButton v-model="curNetwork.enable_manual_routes" on-icon="pi pi-check" off-icon="pi pi-times"
+                                :on-label="t('off_text')" :off-label="t('on_text')" class="w-48" />
+                  <div v-if="curNetwork.enable_manual_routes" class="items-center flex flex-row gap-x-4">
+                    <div class="min-w-64 w-full">
+                      <AutoComplete id="routes" v-model="curNetwork.routes"
+                                    :placeholder="t('chips_placeholder', ['192.168.0.0/16'])" class="w-full" multiple fluid
+                                    :suggestions="inetSuggestions" @complete="searchInetSuggestions" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-row gap-x-9 flex-wrap w-full">
+                <div class="flex flex-col gap-2 grow p-fluid">
+                  <div class="flex">
+                    <label for="exit_nodes">{{ t('exit_nodes') }}</label>
+                    <span class="pi pi-question-circle ml-2 self-center" v-tooltip="{content:t('exit_nodes_help'),html:true}"></span>
+                  </div>
+                  <AutoComplete id="exit_nodes" v-model="curNetwork.exit_nodes"
+                                :placeholder="t('chips_placeholder', ['192.168.8.8'])" class="w-full" multiple fluid
+                                :suggestions="exitNodesSuggestions" @complete="searchExitNodesSuggestions" />
+                </div>
+              </div>
+
             </div>
           </Panel>
 
