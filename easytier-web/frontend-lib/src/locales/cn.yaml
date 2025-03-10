@@ -103,6 +103,9 @@ relay_all_peer_rpc_help: |
 multi_thread: 启用多线程
 multi_thread_help: 使用多线程运行时
 
+proxy_forward_by_system: 系统转发
+proxy_forward_by_system_help: 通过系统内核转发子网代理数据包，禁用内置NAT
+
 relay_network_whitelist: 网络白名单
 relay_network_whitelist_help: |
   仅转发白名单网络的流量，支持通配符字符串。多个网络名称间可以使用英文空格间隔。<br>

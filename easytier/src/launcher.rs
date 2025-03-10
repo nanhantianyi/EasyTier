@@ -585,8 +585,17 @@ impl NetworkConfig {
             flags.multi_thread = multi_thread;
         }
 
-        if self.relay_network_whitelist.len() > 0 {
-            flags.relay_network_whitelist = self.relay_network_whitelist.join(" ")
+        if let Some(proxy_forward_by_system) = self.proxy_forward_by_system {
+            flags.proxy_forward_by_system = proxy_forward_by_system;
+        }
+
+        if self.enable_relay_network_whitelist.unwrap_or_default() {
+            if self.relay_network_whitelist.len() > 0 {
+                flags.relay_network_whitelist = self.relay_network_whitelist.join(" ")
+            } else {
+                flags.relay_network_whitelist = "".to_string()
+            }
+
         }
 
         cfg.set_flags(flags);

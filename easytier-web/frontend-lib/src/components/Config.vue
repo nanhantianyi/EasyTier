@@ -153,6 +153,7 @@ const bool_flags: BoolFlag[] = [
   { field: 'enable_exit_node', help: 'enable_exit_node_help' },
   { field: 'relay_all_peer_rpc', help: 'relay_all_peer_rpc_help' },
   { field: 'multi_thread', help: 'multi_thread_help' },
+  { field: 'proxy_forward_by_system', help: 'proxy_forward_by_system_help' },
 ]
 
 </script>
@@ -311,9 +312,15 @@ const bool_flags: BoolFlag[] = [
                     <span class="pi pi-question-circle ml-2 self-center"
                           v-tooltip="{content:t('relay_network_whitelist_help'),html:true}"></span>
                   </div>
-                  <AutoComplete id="relay_network_whitelist" v-model="curNetwork.relay_network_whitelist"
-                                :placeholder="t('relay_network_whitelist')" class="w-full" multiple fluid
-                                :suggestions="whitelistSuggestions" @complete="searchWhitelistSuggestions" />
+                  <ToggleButton v-model="curNetwork.enable_relay_network_whitelist" on-icon="pi pi-check" off-icon="pi pi-times"
+                                :on-label="t('off_text')" :off-label="t('on_text')" class="w-48" />
+                  <div v-if="curNetwork.enable_relay_network_whitelist" class="items-center flex flex-row gap-x-4">
+                    <div class="min-w-64 w-full">
+                      <AutoComplete id="relay_network_whitelist" v-model="curNetwork.relay_network_whitelist"
+                                    :placeholder="t('relay_network_whitelist')" class="w-full" multiple fluid
+                                    :suggestions="whitelistSuggestions" @complete="searchWhitelistSuggestions" />
+                    </div>
+                  </div>
                 </div>
               </div>
 

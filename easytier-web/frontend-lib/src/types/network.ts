@@ -45,7 +45,9 @@ export interface NetworkConfig {
   enable_exit_node?: boolean
   relay_all_peer_rpc?: boolean
   multi_thread?: boolean
+  proxy_forward_by_system?: boolean
 
+  enable_relay_network_whitelist?: boolean
   relay_network_whitelist: string[]
 
   enable_manual_routes: boolean
@@ -95,8 +97,10 @@ export function DEFAULT_NETWORK_CONFIG(): NetworkConfig {
     no_tun: false,
     enable_exit_node: false,
     relay_all_peer_rpc: false,
-    multi_thread: false,
-    relay_network_whitelist: ['*'],
+    multi_thread: true,
+    proxy_forward_by_system: false,
+    enable_relay_network_whitelist: false,
+    relay_network_whitelist: [],
     enable_manual_routes: false,
     routes: [],
     exit_nodes: [],
